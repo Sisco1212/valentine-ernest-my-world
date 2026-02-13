@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will you be my Val? ❤️</title>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+  }
+
+  body {
+    height: 100vh;
+    background: #f5b9c3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .question {
+    text-align: center;
+    background: #fff;
+  border-radius: 9px;
+  padding: 3em;
+  margin: .9em;
+  }
+
+  .question img {
+    display: block;
+  width: 150px;
+  margin:auto;
+  }
+
+  h2 {
+    font-size: 3rem;
+    color:#c2185b;
+    text-align: center;
+    width: 99%;
+    line-height: 1.2;
+    margin-top: .9em;
+ }
+
+  h1 {
+    font-size: 3rem;
+    color:#c2185b;
+    text-align: center;
+    width: 99%;
+    line-height: 1.2;
+    margin-bottom: .2em;
+ }
+
+  .buttons {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 5em;
+    margin-bottom: 3em;
+  }
+
+  button {
+    padding: 12px 24px;
+     font-size: 1.3rem;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+     outline: none;
+ border: none;
+ /* width: 90px;
+ height: 50px; */
+  }
+
+  .yes {
+    background: #ff4d6d;
+    color: white;
+     position: absolute;
+     left: 40%;
+  }
+
+  .no {
+    background: #000;
+    color: #fff;
+    position: absolute; /* Only NO is absolute */
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .container {
+    text-align: center;
+  }
+
+  .giff {
+    margin-top: 2em;
+  }
+
+  @media only screen and (max-width: 1024px){
+      .yes {
+     left: 35%;
+  }
+  }
+
+
+  @media only screen and (max-width: 768px){
+      .yes {
+     left: 30%;
+  }
+
+
+  }
+
+  @media only screen and (max-width: 560px){
+      .yes {
+     left: 25%;
+  }
+
+  .question img {
+    width: 120px;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+  }
+  }
+
+  @media only screen and (max-width: 500px){
+      .yes {
+     left: 20%;
+  }
+  }
+
+  @media only screen and (max-width: 400px){
+      .yes {
+     left: 15%;
+  }
+  }
+</style>
+</head>
+<body>
+  <!-- <div class="con"> -->
+
+    <div class="question">
+      <img src="./heart2.png" alt="">
+      <h2>My love, Will You be my Valentine?</h2>
+    
+      <div class="buttons">
+        <button class="yes">Yes 💖</button>
+        <button class="no">No 💔</button>
+      </div>
+    </div>
+    
+    <div class="container hidden" id="success">
+      <h1>Yayyyyyy!</h1>
+      <p>You just made my day ❤️</p>
+      <div class="tenor-gif-embed giff" data-postid="10450862751152685702" data-share-method="host" data-aspect-ratio="1" data-width="100%"><a href="https://tenor.com/view/quby-gif-10450862751152685702">Quby Sticker</a>from <a href="https://tenor.com/search/quby-stickers">Quby Stickers</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+    </div>
+  <!-- </div> -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+
+<script>
+const noBtn = document.querySelector(".no");
+const yesBtn = document.querySelector(".yes");
+const question = document.querySelector(".question");
+const success = document.getElementById("success");
+
+// Place NO button initially next to YES
+function placeNoInitially() {
+  const yesRect = yesBtn.getBoundingClientRect();
+  noBtn.style.left = yesRect.right + 20 + "px";
+  noBtn.style.top = yesRect.top + "px";
+}
+
+placeNoInitially();
+window.addEventListener("resize", placeNoInitially);
+
+// Move anywhere on screen (with padding)
+function moveNoButton() {
+  const padding = 80;
+
+  const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+  const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+  const randomX = Math.random() * (maxX - padding) + padding;
+  const randomY = Math.random() * (maxY - padding) + padding;
+
+  noBtn.style.left = randomX + "px";
+  noBtn.style.top = randomY + "px";
+
+  // Grow YES button (max 1.5)
+  const currentScale = Number(yesBtn.dataset.scale || 1);
+
+  if (currentScale < 1.5) {
+    const newScale = Math.min(currentScale + 0.1, 1.5);
+    yesBtn.dataset.scale = newScale;
+    yesBtn.style.transform = `scale(${newScale})`;
+  }
+}
+
+// Trigger when cursor gets close
+document.addEventListener("mousemove", (e) => {
+  const rect = noBtn.getBoundingClientRect();
+  const distanceX = Math.abs(e.clientX - (rect.left + rect.width / 2));
+  const distanceY = Math.abs(e.clientY - (rect.top + rect.height / 2));
+
+  if (distanceX < 100 && distanceY < 100) {
+    moveNoButton();
+  }
+});
+
+// Extra anti-catch
+noBtn.addEventListener("mouseenter", moveNoButton);
+noBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  moveNoButton();
+});
+
+// YES click
+yesBtn.addEventListener("click", () => {
+  blastConfetti();
+  question.classList.add("hidden");
+  success.classList.remove("hidden");
+});
+
+// Confetti
+function blastConfetti() {
+  const count = 200;
+  const defaults = { origin: { y: 0.7 } };
+
+  function fire(particleRatio, opts) {
+    confetti(
+      Object.assign({}, defaults, opts, {
+        particleCount: Math.floor(count * particleRatio),
+      })
+    );
+  }
+
+  fire(0.25, { spread: 26, startVelocity: 55 });
+  fire(0.2, { spread: 60 });
+  fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+  fire(0.1, { spread: 120, startVelocity: 25 });
+  fire(0.1, { spread: 120, startVelocity: 45 });
+}
+</script>
+
+</body>
+</html>
